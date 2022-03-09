@@ -23,4 +23,17 @@ public record LineSegment(Point p, Point q) {
     public int hashCode() {
         throw new UnsupportedOperationException("hashCode() is not supported");
     }
+
+    public double slope() {
+        return p.slopeTo(q);
+        }
+
+    public boolean collinear(LineSegment other) {
+        if (other.slope() == this.slope()){
+            if (other.p.equals(p)||other.p.slopeTo(p)==other.slope()){
+                return true;
+            }
+        }
+        return false;
+    }
 }

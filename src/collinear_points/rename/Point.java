@@ -3,7 +3,14 @@ package collinear_points.rename;
 import java.util.*;
 import edu.princeton.cs.algs4.StdDraw;
 
-public record Point(int x, int y) implements Comparable<Point> {
+public final class Point implements Comparable<Point> {
+    private final int x;
+    private final int y;
+
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
     public void draw() {
 //        for (int i = -50; i <= 50; i++) {
@@ -19,14 +26,21 @@ public record Point(int x, int y) implements Comparable<Point> {
         StdDraw.line(this.x, this.y, that.x, that.y);
     }
 
+    private double lastSlope;
+
     public double slopeTo(Point that) {
-        return (double) (y - that.y) / (x - that.x);
+        lastSlope = (double) (y - that.y) / (x - that.x);
+        return lastSlope;
+    }
+
+    public double getLastSlope() {
+        return lastSlope;
     }
 
     @Override
     public int compareTo(Point that) {
         return y == that.y ? Double.compare(x, that.x)
-                           : Double.compare(y, that.y);
+                : Double.compare(y, that.y);
     }
 
     public Comparator<Point> slopeOrder() {
@@ -48,5 +62,12 @@ public record Point(int x, int y) implements Comparable<Point> {
         Point c = new Point(9, 8);
 
         System.out.println(a.slopeOrder().compare(b, c));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj == this
+                || obj instanceof Point point
+                && point.x == x && point.y == y;
     }
 }
